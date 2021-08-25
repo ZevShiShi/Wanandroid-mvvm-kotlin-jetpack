@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/black"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="2dp"
+        app:contentPaddingLeft="10dp"
+        app:contentPaddingRight="10dp"
+        app:contentPaddingTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvAuthor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_707070"
+                    android:textSize="12sp"
+                    tools:text="任务线" />
+
+                <TextView
+                    android:id="@+id/tvChapterAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shape_chapter_attr"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="3dp"
+                    android:text="置顶"
+                    android:textColor="@color/color_fc4c07"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvNewChapter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shape_chapter_attr"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="3dp"
+                    android:text="新"
+                    android:textColor="@color/color_fc4c07"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvChapterTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shape_chapter_publish"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="3dp"
+                    android:textColor="@color/color_059f11"
+                    android:textSize="10sp"
+                    android:visibility="gone"
+                    tools:text="本站发布" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_707070"
+                    android:textSize="12sp"
+                    tools:text="2020-08-01 12:50" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/color_2c2c2c"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="每天都问问你每天都问问你每天都问问你每天都问问你每天都问问你每天都问问你每天都问问你每天都问问你" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvSuperChapterName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_707070"
+                    android:textSize="12sp"
+                    tools:text="广场Tab" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="·"
+                    android:textColor="@color/color_707070"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvChapterName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_707070"
+                    android:textSize="12sp"
+                    tools:text="自助" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.jaren.lib.view.LikeView
+                    android:id="@+id/likeZan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:checkedColor="@color/like_selected"
+                    app:cirRadius="7dp"
+                    app:cycleTime="1000"
+                    app:defaultColor="@color/like_default"
+                    app:ringColor="@color/like_selected" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>
