@@ -63,4 +63,8 @@ class PlazaFragment : BaseFragment<TreeViewModel, PlazaFragmentBinding>() {
         setupStatusView(recycleView)
         treeReqVM.getPlazaList(true)
     }
+
+    override fun reload() {
+        treeReqVM.getPlazaList(true)
+    }
 }

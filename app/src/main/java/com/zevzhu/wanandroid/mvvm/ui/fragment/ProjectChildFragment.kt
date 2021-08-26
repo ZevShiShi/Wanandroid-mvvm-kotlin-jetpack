@@ -75,4 +75,7 @@ class ProjectChildFragment : BaseFragment<ProjectViewModel, ProjectChildFragment
         projectVM.getProChildList(cid, true, isNew)
     }
 
+    override fun reload() {
+        projectVM.getProChildList(cid, true, isNew)
+    }
 }

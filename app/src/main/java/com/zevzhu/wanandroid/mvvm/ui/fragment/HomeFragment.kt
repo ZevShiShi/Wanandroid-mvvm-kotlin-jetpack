@@ -107,10 +107,15 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeFragmentBinding>() {
         })
 
         homeReqViewModel.homeResult.observe(viewLifecycleOwner, Observer {
-            LogUtils.d("hasMore==overLoad===$overLoad")
             overLoad = loadPageData(mChapterAdapter, getStatusManager(), refreshLayout, it)
+            LogUtils.d("hasMore==overLoad===$overLoad")
         })
 
+    }
+
+    override fun reload() {
+        homeReqViewModel.getBanner()
+        homeReqViewModel.getHomeList(true)
     }
 
     override fun lazyLoadData() {

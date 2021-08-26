@@ -2,6 +2,7 @@ package com.zevzhu.wanandroid.ext
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.blankj.utilcode.util.ObjectUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import me.bakumon.statuslayoutmanager.library.StatusLayoutManager
@@ -24,8 +25,8 @@ import me.hgj.jetpackmvvm.state.paresResult
  */
 fun <T> BaseVmFragment<*>.parseStateEx(
     resultState: ResultState<T>,
-    onSuccess: (T) -> Unit,
     statusLayoutManager: StatusLayoutManager,
+    onSuccess: (T) -> Unit,
     onError: ((AppException) -> Unit)? = null,
     onLoading: ((message: String) -> Unit)? = null
 ) {
@@ -40,6 +41,10 @@ fun <T> BaseVmFragment<*>.parseStateEx(
         }
         is ResultState.Success -> {
             dismissLoading()
+            if (ObjectUtils.isEmpty(resultState.data)) {
+                statusLayoutManager.showEmptyLayout()
+                return
+            }
             onSuccess(resultState.data)
             statusLayoutManager.showSuccessLayout()
         }

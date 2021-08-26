@@ -78,6 +78,20 @@ fun BaseQuickAdapter<*, *>.initPage(
     recyclerView.adapter = this
 }
 
+fun BaseQuickAdapter<*, *>.initPageNoLoadMore(
+    swipeRefreshLayout: SmartRefreshLayout,
+    recyclerView: RecyclerView,
+    itemClick: (adapter: BaseQuickAdapter<*, *>, view: View, position: Int) -> Unit = { adapter, v, position -> },
+    refresh: () -> Unit = {}
+) {
+    swipeRefreshLayout.setEnableLoadMore(false)
+    swipeRefreshLayout.setOnRefreshListener { refresh.invoke() }
+    setOnItemClickListener { adapter, view, position ->
+        itemClick.invoke(adapter, view, position)
+    }
+    recyclerView.adapter = this
+}
+
 /**
  * 加载分页数据-封装公共部分
  * 返回是否还有下一页
@@ -115,9 +129,8 @@ fun <T> loadPageData(
         } else {
             baseQuickAdapter.loadMoreModule.loadMoreFail()
         }
-        return false
     }
-
+    return true
 }
 
 

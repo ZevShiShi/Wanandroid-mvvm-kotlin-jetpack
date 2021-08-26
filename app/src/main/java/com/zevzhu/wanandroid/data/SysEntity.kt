@@ -1,6 +1,5 @@
 package com.zevzhu.wanandroid.data
 
-import com.zevzhu.wanandroid.data.SysChildEntity
 
 data class SysEntity(
     val children: ArrayList<SysChildEntity>,

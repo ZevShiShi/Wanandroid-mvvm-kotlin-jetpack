@@ -3,6 +3,7 @@ package com.zevzhu.wanandroid.http.api
 import com.zevzhu.wanandroid.data.BannerEntity
 import com.zevzhu.wanandroid.data.ChapterEntity
 import com.zevzhu.wanandroid.data.ProTabEntity
+import com.zevzhu.wanandroid.data.SysEntity
 import com.zevzhu.wanandroid.http.ApiPageResponse
 import com.zevzhu.wanandroid.http.ApiResponse
 import retrofit2.http.GET
@@ -57,4 +58,18 @@ interface ApiService {
      */
     @GET("user_article/list/{page}/json")
     suspend fun getPlazaList(@Path("page") page: Int): ApiResponse<ApiPageResponse<ChapterEntity>>
+
+
+    /**
+     * 每日一问
+     */
+    @GET("wenda/list/{page}/json")
+    suspend fun getAskList(@Path("page") page: Int): ApiResponse<ApiPageResponse<ChapterEntity>>
+
+    /**
+     * 体系列表
+     */
+    @GET("tree/json")
+    suspend fun getSystemList(): ApiResponse<MutableList<SysEntity>>
+
 }
