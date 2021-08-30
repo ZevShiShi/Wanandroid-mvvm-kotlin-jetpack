@@ -59,6 +59,13 @@ fun BaseQuickAdapter<*, *>.setAdapterAnimation(mode: Int) {
     }
 }
 
+
+fun View.onClick(click: (v: View) -> Unit) {
+    setOnClickListener {
+        click.invoke(it)
+    }
+}
+
 fun BaseQuickAdapter<*, *>.initPage(
     swipeRefreshLayout: SmartRefreshLayout,
     recyclerView: RecyclerView,

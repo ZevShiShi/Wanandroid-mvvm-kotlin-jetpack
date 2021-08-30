@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">WanAndroid</string>
+
+    <string name="user_score">我的积分</string>
+    <string name="user_collect">我的收藏</string>
+    <string name="user_chapter">我的文章</string>
+    <string name="user_open_source">开源网站</string>
+    <string name="user_todo">TODO</string>
+    <string name="user_settings">系统设置</string>
+
 </resources>

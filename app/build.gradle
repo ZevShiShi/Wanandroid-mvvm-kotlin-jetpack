@@ -101,4 +101,6 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
     implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
     implementation 'com.google.android:flexbox:2.0.1'
+    implementation 'com.github.lygttpod:SuperTextView:2.4.6'
+    implementation 'com.makeramen:roundedimageview:2.2.1'
 }

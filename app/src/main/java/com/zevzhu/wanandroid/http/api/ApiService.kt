@@ -3,9 +3,7 @@ package com.zevzhu.wanandroid.http.api
 import com.zevzhu.wanandroid.data.*
 import com.zevzhu.wanandroid.http.ApiPageResponse
 import com.zevzhu.wanandroid.http.ApiResponse
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -100,5 +98,22 @@ interface ApiService {
         @Path("page") page: Int
     ): ApiResponse<ApiPageResponse<ChapterEntity>>
 
+
+    /**
+     * 登录
+     */
+    @FormUrlEncoded
+    @POST("user/login")
+    suspend fun login(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): ApiResponse<UserEntity>
+
+
+    /**
+     * 退出登录
+     */
+    @GET("user/logout/json")
+    suspend fun loginOut(): ApiResponse<Any>
 
 }
