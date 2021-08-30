@@ -8,6 +8,8 @@ import com.zevzhu.wanandroid.R
 import com.zevzhu.wanandroid.data.SysChildEntity
 import com.zevzhu.wanandroid.databinding.SystemFragmentBinding
 import com.zevzhu.wanandroid.ext.initPageNoLoadMore
+import com.zevzhu.wanandroid.ext.nav
+import com.zevzhu.wanandroid.ext.navigateAction
 import com.zevzhu.wanandroid.ext.parseStateEx
 import com.zevzhu.wanandroid.mvvm.base.BaseFragment
 import com.zevzhu.wanandroid.mvvm.ui.adapter.SysAdapter
@@ -27,12 +29,23 @@ class SystemFragment : BaseFragment<TreeViewModel, SystemFragmentBinding>() {
     override fun layoutId() = R.layout.system_fragment
 
     override fun initView(savedInstanceState: Bundle?) {
-        mAdapter.initPageNoLoadMore(refreshLayout, recycleView, { adapter, view, position -> }, {
-            treeReqVM.getSystemList()
-        })
-        mAdapter.itemClick { adapter, view, position ->
-            val entity = adapter.data[position] as SysChildEntity
-            LogUtils.d("itemClick====${entity.id}====${entity.name}")
+        mAdapter.apply {
+            initPageNoLoadMore(refreshLayout, recycleView, { adapter, view, position ->
+            }, {
+                treeReqVM.getSystemList()
+            })
+            itemClick { adapter, view, position ->
+                val data = adapter.data as ArrayList<SysChildEntity>
+                data.forEachIndexed { index, entity ->
+                    entity.select = false
+                    if (index == position) {
+                        entity.select = true
+                    }
+                }
+                nav().navigateAction(R.id.action_system_to_sysDetail, Bundle().apply {
+                    putParcelableArrayList("sysArray", data)
+                })
+            }
         }
     }
 
@@ -48,7 +61,7 @@ class SystemFragment : BaseFragment<TreeViewModel, SystemFragmentBinding>() {
 
     override fun createObserver() {
         treeReqVM.systemResult.observe(viewLifecycleOwner, Observer { resultStatus ->
-            parseStateEx(resultStatus, getStatusManager(), {
+            parseStateEx(resultStatus, getStatusManager(), refreshLayout, {
                 mAdapter.setNewInstance(it)
             }, {
                 LogUtils.e("systemResult=========${it}")

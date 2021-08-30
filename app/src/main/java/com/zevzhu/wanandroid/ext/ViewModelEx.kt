@@ -3,6 +3,7 @@ package com.zevzhu.wanandroid.ext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.blankj.utilcode.util.ObjectUtils
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import me.bakumon.statuslayoutmanager.library.StatusLayoutManager
@@ -26,10 +27,12 @@ import me.hgj.jetpackmvvm.state.paresResult
 fun <T> BaseVmFragment<*>.parseStateEx(
     resultState: ResultState<T>,
     statusLayoutManager: StatusLayoutManager,
+    refreshLayout: SmartRefreshLayout,
     onSuccess: (T) -> Unit,
     onError: ((AppException) -> Unit)? = null,
     onLoading: ((message: String) -> Unit)? = null
 ) {
+    refreshLayout.finishRefresh()
     when (resultState) {
         is ResultState.Loading -> {
             statusLayoutManager.showLoadingLayout()

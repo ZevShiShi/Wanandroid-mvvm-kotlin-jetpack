@@ -12,11 +12,19 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.zevzhu.wanandroid.mvvm.ui.fragment.HomeFragment"
-        android:label="HomeFragment"/>
+        android:label="HomeFragment" />
 
     <action
         android:id="@+id/action_global_webPageFragment"
         app:destination="@id/webPageFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <action
+        android:id="@+id/action_system_to_sysDetail"
+        app:destination="@id/sysDetailFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
@@ -29,7 +37,8 @@
     <fragment
         android:id="@+id/systemFragment"
         android:name="com.zevzhu.wanandroid.mvvm.ui.fragment.SystemFragment"
-        android:label="SystemFragment" />
+        android:label="SystemFragment">
+    </fragment>
     <fragment
         android:id="@+id/wxFragment"
         android:name="com.zevzhu.wanandroid.mvvm.ui.fragment.WxFragment"
@@ -42,5 +51,8 @@
         android:id="@+id/webPageFragment"
         android:name="com.zevzhu.wanandroid.mvvm.ui.fragment.WebPageFragment"
         android:label="WebPageFragment" />
-
+    <fragment
+        android:id="@+id/sysDetailFragment"
+        android:name="com.zevzhu.wanandroid.mvvm.ui.fragment.SysDetailFragment"
+        android:label="SysDetailFragment" />
 </navigation>

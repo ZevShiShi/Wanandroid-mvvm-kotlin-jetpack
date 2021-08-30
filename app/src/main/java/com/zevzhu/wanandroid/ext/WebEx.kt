@@ -11,7 +11,8 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
-import com.just.agentweb.*
+import com.just.agentweb.AgentWeb
+import com.just.agentweb.AgentWebConfig
 import com.just.agentweb.WebChromeClient
 import com.just.agentweb.WebViewClient
 import com.zevzhu.wanandroid.R
@@ -19,7 +20,7 @@ import com.zevzhu.wanandroid.app.appContext
 
 
 private const val WEB_TAG = "WebEx"
-private var mCallback: WebCallback? = null
+private var mCallback: WebCallback = WebCallbackImpl()
 lateinit var agentWeb: AgentWeb
 
 /**
@@ -41,42 +42,42 @@ fun Fragment.initWeb(
         .closeIndicator()
         .setWebViewClient(AgentWebViewClient())
         .setWebChromeClient(AgentWebChromeClient(progress))
-        .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
         .setMainFrameErrorView(R.layout.layout_error, -1)
-        .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
-        .interceptUnkownUrl()
+//        .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
+//        .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
+//        .interceptUnkownUrl()
         .createAgentWeb()
         .ready()
         .go(url)
 }
 
 
-fun Fragment.reloadUrl() {
+fun reloadUrl() {
     agentWeb.urlLoader.reload()
 }
 
-fun Fragment.loadUrl(url: String?) {
+fun loadUrl(url: String?) {
     agentWeb.urlLoader.loadUrl(url)
 }
 
-fun Fragment.resumeWeb() {
+fun resumeWeb() {
     agentWeb.webLifeCycle.onResume()
 }
 
-fun Fragment.pauseWeb() {
+fun pauseWeb() {
     agentWeb.webLifeCycle.onPause()
 }
 
-fun Fragment.destroyWeb() {
+fun destroyWeb() {
     agentWeb.destroy()
 }
 
-fun Fragment.getWebView(): WebView {
+fun getWebView(): WebView {
     return agentWeb.webCreator.webView
 }
 
 
-fun Fragment.getCurrentUrl(): String {
+fun getCurrentUrl(): String {
     return getWebView().url!!
 }
 
@@ -89,8 +90,7 @@ fun Fragment.goBack() {
     }
 }
 
-
-fun Fragment.goForward() {
+fun goForward() {
     if (getWebView().canGoForward()) {
         getWebView().goForward()
     }
@@ -103,7 +103,7 @@ internal class AgentWebViewClient : WebViewClient() {
         view: WebView,
         request: WebResourceRequest
     ): Boolean {
-        mCallback?.onGoWebDetail(request.url.toString())
+        mCallback.onGoWebDetail(request.url.toString())
         return super.shouldOverrideUrlLoading(view, request)
     }
 
@@ -111,7 +111,7 @@ internal class AgentWebViewClient : WebViewClient() {
         view: WebView,
         url: String
     ): Boolean {
-        mCallback?.onGoWebDetail(url)
+        mCallback.onGoWebDetail(url)
         return super.shouldOverrideUrlLoading(view, url)
     }
 
@@ -121,15 +121,15 @@ internal class AgentWebViewClient : WebViewClient() {
         favicon: Bitmap?
     ) {
         super.onPageStarted(view, url, favicon)
-        mCallback?.pageStart(view, url)
+        mCallback.pageStart(view, url)
     }
 
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
         //            view.loadUrl("javascript:(function(){" + "document.getElementsByTagName('body')[0].style.height = window.innerHeight+'px';" + "})()");
         // 调用js代码需要延迟1秒才能够成功调用
-        if (mCallback != null && view.progress == 100) {
-            mCallback?.pageEnd(view, url)
+        if (view.progress == 100) {
+            mCallback.pageEnd(view, url)
         }
     }
 
@@ -145,7 +145,10 @@ internal class AgentWebViewClient : WebViewClient() {
                 "onReceivedError====" + error.description
                     .toString() + "======" + view.progress
             )
+            mCallback.error(view, error.description.toString())
         }
+
+
     }
 
     override fun onReceivedHttpError(
@@ -157,6 +160,7 @@ internal class AgentWebViewClient : WebViewClient() {
         LogUtils.e(
             WEB_TAG, "onReceivedError====" + errorResponse.reasonPhrase
         )
+        mCallback.error(view, errorResponse.reasonPhrase)
     }
 
     override fun onReceivedSslError(
@@ -165,6 +169,7 @@ internal class AgentWebViewClient : WebViewClient() {
         error: SslError
     ) {
         super.onReceivedSslError(view, handler, error)
+        mCallback.error(view, error.toString())
         //              handler.proceed();// 接受所有网站的证书
     } /*错误页回调该方法 ， 如果重写了该方法， 上面传入了布局将不会显示 ， 交由开发者实现，注意参数对齐。*/ //        public void onMainFrameError(AbsAgentWebUIController agentWebUIController, WebView view, int errorCode, String description, String failingUrl) {
     //            LogUtils.d(TAG, "AgentWebFragment onMainFrameError");
@@ -177,11 +182,8 @@ internal class AgentWebChromeClient(private val progress: Int) :
     WebChromeClient() {
     override fun onProgressChanged(view: WebView, newProgress: Int) {
         super.onProgressChanged(view, newProgress)
-        if (mCallback == null) return
-        if (mCallback is WebCallbackEx) {
-            LogUtils.d("onProgressChanged=====$newProgress")
-            (mCallback as WebCallbackImpl).onProgress(view, newProgress)
-        }
+        LogUtils.d("onProgressChanged=====$newProgress")
+        mCallback.onProgress(view, newProgress)
     }
 
     override fun getDefaultVideoPoster(): Bitmap? {
@@ -202,14 +204,12 @@ internal class AgentWebChromeClient(private val progress: Int) :
             WEB_TAG,
             "onReceivedTitle:" + title + "  view:" + view.url
         )
-        if (mCallback != null && mCallback is WebCallbackEx) {
-            (mCallback as WebCallbackImpl).onReceivedTitle(title, view.url)
-        }
+        mCallback.onReceivedTitle(title, view.url)
     }
 
 }
 
-internal open class WebCallbackImpl : WebCallbackEx {
+internal open class WebCallbackImpl : WebCallback {
     override fun onProgress(view: WebView?, newProgress: Int) {
     }
 
@@ -235,9 +235,6 @@ interface WebCallback {
     fun pageStart(web: WebView?, url: String?)
     fun pageEnd(web: WebView?, url: String?)
     fun error(web: WebView?, msg: String?)
-}
-
-interface WebCallbackEx : WebCallback {
     fun onProgress(view: WebView?, newProgress: Int)
     fun onReceivedTitle(title: String?, url: String?)
 }

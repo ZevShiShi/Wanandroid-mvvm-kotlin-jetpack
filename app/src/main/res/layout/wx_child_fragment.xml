@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         tools:context=".mvvm.ui.fragment.WxFragment">
 
-        <include layout="@layout/layout_tab_viewpager" />
+        <include layout="@layout/layout_recycleview" />
+
     </FrameLayout>
 </layout>

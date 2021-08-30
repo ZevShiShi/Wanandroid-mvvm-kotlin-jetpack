@@ -11,10 +11,6 @@
         android:layout_height="match_parent"
         tools:context=".mvvm.ui.fragment.TreeFragment">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Hello" />
-
+        <include layout="@layout/layout_recycleview" />
     </FrameLayout>
 </layout>

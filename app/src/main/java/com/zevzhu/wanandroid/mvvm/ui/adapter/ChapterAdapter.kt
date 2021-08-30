@@ -1,5 +1,6 @@
 package com.zevzhu.wanandroid.mvvm.ui.adapter
 
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ObjectUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseDelegateMultiAdapter
@@ -11,6 +12,7 @@ import com.zevzhu.wanandroid.R
 import com.zevzhu.wanandroid.app.appContext
 import com.zevzhu.wanandroid.data.ChapterEntity
 import com.zevzhu.wanandroid.ext.setAdapterAnimation
+import java.util.*
 
 class ChapterAdapter(data: MutableList<ChapterEntity>? = null) :
     BaseDelegateMultiAdapter<ChapterEntity, BaseViewHolder>(data), LoadMoreModule {
@@ -22,13 +24,13 @@ class ChapterAdapter(data: MutableList<ChapterEntity>? = null) :
     }
 
     init {
-        setAdapterAnimation(5)
+        LogUtils.d("ChapterAdapter===========init")
+        setAdapterAnimation(Random().nextInt(5))
         setMultiTypeDelegate(object : BaseMultiTypeDelegate<ChapterEntity>() {
             override fun getItemType(data: List<ChapterEntity>, position: Int): Int {
                 return if (ObjectUtils.isEmpty(data[position].envelopePic))
                     ChapterEntity.NORMAL else ChapterEntity.PROJECT
             }
-
         })
         getMultiTypeDelegate()?.let {
             it.addItemType(ChapterEntity.NORMAL, R.layout.item_home_chapter)

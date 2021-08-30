@@ -17,19 +17,26 @@ import kotlinx.android.synthetic.main.web_page_fragment.*
 class WebPageFragment : BaseFragment<WebPageViewModel, WebPageFragmentBinding>() {
 
     override fun layoutId() = R.layout.web_page_fragment
-
+    private var url = ""
     override fun initView(savedInstanceState: Bundle?) {
         val id = requireArguments().getInt("id")
-        val url = requireArguments().getString("url")
+        url = requireArguments().getString("url")!!
         val title = requireArguments().getString("title")
         LogUtils.d("WebPageFragment====$id====$url")
-        initWeb(url!!, webContainer, object : WebCallbackImpl() {
+        setupStatusView(webContainer, false)
+        initWeb(url, webContainer, object : WebCallbackImpl() {
             override fun onProgress(view: WebView?, newProgress: Int) {
                 super.onProgress(view, newProgress)
+                if (newProgress <= 20) {
+                    getStatusManager().showLoadingLayout()
+                }
                 if (newProgress >= 80) {
                     getStatusManager().showSuccessLayout()
                 }
+            }
 
+            override fun error(web: WebView?, msg: String?) {
+                getStatusManager().showErrorLayout()
             }
         })
         (requireActivity() as MainActivity).setSupportActionBar(toolbar)
@@ -45,12 +52,6 @@ class WebPageFragment : BaseFragment<WebPageViewModel, WebPageFragmentBinding>()
                     goBack()
                 }
             })
-    }
-
-
-    override fun lazyLoadData() {
-        super.lazyLoadData()
-        setupStatusView(webContainer, true)
     }
 
     override fun onResume() {

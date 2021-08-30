@@ -1,9 +1,6 @@
 package com.zevzhu.wanandroid.http.api
 
-import com.zevzhu.wanandroid.data.BannerEntity
-import com.zevzhu.wanandroid.data.ChapterEntity
-import com.zevzhu.wanandroid.data.ProTabEntity
-import com.zevzhu.wanandroid.data.SysEntity
+import com.zevzhu.wanandroid.data.*
 import com.zevzhu.wanandroid.http.ApiPageResponse
 import com.zevzhu.wanandroid.http.ApiResponse
 import retrofit2.http.GET
@@ -66,10 +63,42 @@ interface ApiService {
     @GET("wenda/list/{page}/json")
     suspend fun getAskList(@Path("page") page: Int): ApiResponse<ApiPageResponse<ChapterEntity>>
 
+
+    /**
+     * 体系下的文章列表
+     */
+    @GET("article/list/{page}/json")
+    suspend fun getSysDetailList(
+        @Path("page") page: Int,
+        @Query("cid") cid: Int
+    ): ApiResponse<ApiPageResponse<ChapterEntity>>
+
     /**
      * 体系列表
      */
     @GET("tree/json")
     suspend fun getSystemList(): ApiResponse<MutableList<SysEntity>>
+
+    /**
+     * 导航数据
+     */
+    @GET("navi/json")
+    suspend fun getNavList(): ApiResponse<MutableList<NavigationEntity>>
+
+    /**
+     * 微信公众号tab
+     */
+    @GET("wxarticle/chapters/json")
+    suspend fun getWxTab(): ApiResponse<MutableList<WxTabEntity>>
+
+    /**
+     * 微信公众号列表
+     */
+    @GET("wxarticle/list/{id}/{page}/json")
+    suspend fun getWxList(
+        @Path("id") id: Int,
+        @Path("page") page: Int
+    ): ApiResponse<ApiPageResponse<ChapterEntity>>
+
 
 }

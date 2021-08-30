@@ -1,5 +1,9 @@
 package com.zevzhu.wanandroid.data
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class SysChildEntity(
     val courseId: Int,
     val id: Int,
@@ -7,5 +11,6 @@ data class SysChildEntity(
     val order: Int,
     val parentChapterId: Int,
     val userControlSetTop: Boolean,
-    val visible: Int
-)
+    val visible: Int,
+    var select: Boolean = false
+) : Parcelable

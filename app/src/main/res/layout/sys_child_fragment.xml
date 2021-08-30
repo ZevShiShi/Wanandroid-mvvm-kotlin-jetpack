@@ -9,8 +9,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".mvvm.ui.fragment.WxFragment">
+        tools:context=".mvvm.ui.fragment.SysChildFragment">
 
-        <include layout="@layout/layout_tab_viewpager" />
+        <include layout="@layout/layout_recycleview" />
     </FrameLayout>
 </layout>

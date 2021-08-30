@@ -19,7 +19,7 @@ import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
  */
 abstract class BaseFragment<VM : BaseViewModel, DB : ViewDataBinding> : BaseVmDbFragment<VM, DB>() {
 
-
+    private fun isStatusManagerInit() = ::mStatusManager.isInitialized
     private lateinit var mStatusManager: StatusLayoutManager
     private var statusView: View? = null
 
@@ -42,7 +42,10 @@ abstract class BaseFragment<VM : BaseViewModel, DB : ViewDataBinding> : BaseVmDb
     protected open fun reload() {}
 
     protected open fun getStatusManager(): StatusLayoutManager {
-        return mStatusManager
+        return when (isStatusManagerInit()) {
+            true -> mStatusManager
+            false -> StatusLayoutManager.Builder(requireView()).build()
+        }
     }
 
     private fun createStatusLayout() {
