@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.CompoundButton
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.zevzhu.wanandroid.R
 import com.zevzhu.wanandroid.app.eventViewModel
@@ -12,10 +13,10 @@ import com.zevzhu.wanandroid.ext.nav
 import com.zevzhu.wanandroid.ext.navigateAction
 import com.zevzhu.wanandroid.mvvm.base.BaseFragment
 import com.zevzhu.wanandroid.mvvm.viewmodel.request.UserReqViewModel
-import com.zevzhu.wanandroid.mvvm.viewmodel.view.LoginViewModel
+import com.zevzhu.wanandroid.mvvm.viewmodel.view.LoginRegViewModel
 import me.hgj.jetpackmvvm.ext.parseState
 
-class LoginFragment : BaseFragment<LoginViewModel, LoginFragmentBinding>() {
+class LoginFragment : BaseFragment<LoginRegViewModel, LoginFragmentBinding>() {
 
 
     private val userReqVM: UserReqViewModel by viewModels()
@@ -50,6 +51,9 @@ class LoginFragment : BaseFragment<LoginViewModel, LoginFragmentBinding>() {
                 return
             }
             userReqVM.login(mViewModel.username.get(), mViewModel.password.get())
+            if (KeyboardUtils.isSoftInputVisible(requireActivity())) {
+                KeyboardUtils.toggleSoftInput()
+            }
         }
 
         fun clickReg() {

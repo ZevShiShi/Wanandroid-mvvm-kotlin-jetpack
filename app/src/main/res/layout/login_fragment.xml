@@ -6,7 +6,7 @@
 
         <variable
             name="viewmodel"
-            type="com.zevzhu.wanandroid.mvvm.viewmodel.view.LoginViewModel" />
+            type="com.zevzhu.wanandroid.mvvm.viewmodel.view.LoginRegViewModel" />
 
         <variable
             name="click"
@@ -119,6 +119,5 @@
             android:text="去注册"
             android:textColor="@color/color_1296db"
             android:textSize="15dp" />
-
     </LinearLayout>
 </layout>

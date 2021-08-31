@@ -116,4 +116,20 @@ interface ApiService {
     @GET("user/logout/json")
     suspend fun loginOut(): ApiResponse<Any>
 
+    /**
+     * 个人信息（需要登录）
+     */
+    @GET("lg/coin/userinfo/json")
+    suspend fun getUserInfo(): ApiResponse<UserinfoEntity>
+
+    /**
+     * 注册
+     */
+    @FormUrlEncoded
+    @POST("user/register")
+    suspend fun register(
+        @Field("username") username: String,
+        @Field("password") password: String,
+        @Field("repassword") repassword: String
+    ): ApiResponse<Any>
 }

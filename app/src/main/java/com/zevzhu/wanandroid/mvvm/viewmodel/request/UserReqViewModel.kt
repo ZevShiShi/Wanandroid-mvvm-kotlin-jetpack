@@ -2,6 +2,7 @@ package com.zevzhu.wanandroid.mvvm.viewmodel.request
 
 import androidx.lifecycle.MutableLiveData
 import com.zevzhu.wanandroid.data.UserEntity
+import com.zevzhu.wanandroid.data.UserinfoEntity
 import com.zevzhu.wanandroid.http.apiService
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.request
@@ -11,6 +12,8 @@ class UserReqViewModel : BaseViewModel() {
 
     val loginResult = MutableLiveData<ResultState<UserEntity>>()
     val loginOutResult = MutableLiveData<ResultState<Any>>()
+    val userResult = MutableLiveData<ResultState<UserinfoEntity>>()
+    val regResult = MutableLiveData<ResultState<Any>>()
 
     fun login(username: String, password: String) {
         request({ apiService.login(username, password) }, loginResult)
@@ -18,5 +21,13 @@ class UserReqViewModel : BaseViewModel() {
 
     fun loginOut() {
         request({ apiService.loginOut() }, loginOutResult)
+    }
+
+    fun getUserInfo() {
+        request({ apiService.getUserInfo() }, userResult)
+    }
+
+    fun register(username: String, password: String, repassword: String) {
+        request({ apiService.register(username, password, repassword) }, regResult)
     }
 }

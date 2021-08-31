@@ -6,12 +6,12 @@ import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.callback.databind.BooleanObservableField
 import me.hgj.jetpackmvvm.callback.databind.StringObservableField
 
-class LoginViewModel : BaseViewModel() {
-
-
+class LoginRegViewModel : BaseViewModel() {
     val username = StringObservableField()
     val password = StringObservableField()
+    val repassword = StringObservableField()
     val isShowPwd = BooleanObservableField()
+    val isShowRePwd = BooleanObservableField()
 
 
     val clearVisible = object : ObservableInt(username) {
@@ -34,7 +34,13 @@ class LoginViewModel : BaseViewModel() {
         }
     }
 
-
+    val repasswordVisible = object : ObservableInt(repassword) {
+        override fun get(): Int {
+            return if (repassword.get().isEmpty()) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+        }
+    }
 }
-
-
