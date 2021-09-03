@@ -9,6 +9,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.zevzhu.wanandroid.R
 import com.zevzhu.wanandroid.app.eventViewModel
 import com.zevzhu.wanandroid.databinding.LoginFragmentBinding
+import com.zevzhu.wanandroid.ext.hideKeyboard
 import com.zevzhu.wanandroid.ext.nav
 import com.zevzhu.wanandroid.ext.navigateAction
 import com.zevzhu.wanandroid.mvvm.base.BaseFragment
@@ -51,9 +52,7 @@ class LoginFragment : BaseFragment<LoginRegViewModel, LoginFragmentBinding>() {
                 return
             }
             userReqVM.login(mViewModel.username.get(), mViewModel.password.get())
-            if (KeyboardUtils.isSoftInputVisible(requireActivity())) {
-                KeyboardUtils.toggleSoftInput()
-            }
+            hideKeyboard()
         }
 
         fun clickReg() {

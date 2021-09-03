@@ -6,11 +6,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.blankj.utilcode.util.ToastUtils
 import com.zevzhu.wanandroid.R
+import com.zevzhu.wanandroid.app.eventViewModel
 import com.zevzhu.wanandroid.databinding.RegisterFragmentBinding
+import com.zevzhu.wanandroid.ext.hideKeyboard
 import com.zevzhu.wanandroid.mvvm.base.BaseFragment
 import com.zevzhu.wanandroid.mvvm.viewmodel.request.UserReqViewModel
 import com.zevzhu.wanandroid.mvvm.viewmodel.view.LoginRegViewModel
 import me.hgj.jetpackmvvm.ext.nav
+import me.hgj.jetpackmvvm.ext.navigateAction
 import me.hgj.jetpackmvvm.ext.parseState
 
 class RegisterFragment : BaseFragment<LoginRegViewModel, RegisterFragmentBinding>() {
@@ -35,8 +38,9 @@ class RegisterFragment : BaseFragment<LoginRegViewModel, RegisterFragmentBinding
     override fun createObserver() {
         userReqVM.regResult.observe(viewLifecycleOwner, Observer { result ->
             parseState(result, {
-                ToastUtils.showShort("注册成功，请登录")
-                nav().navigateUp()
+                eventViewModel.userInfo.value = it
+                ToastUtils.showShort("注册登录成功")
+                nav().navigateAction(R.id.action_registerFragment_to_main)
             }, {
                 ToastUtils.showShort(it.errorMsg)
             })
@@ -61,9 +65,9 @@ class RegisterFragment : BaseFragment<LoginRegViewModel, RegisterFragmentBinding
             }
             userReqVM.register(
                 mViewModel.username.get(),
-                mViewModel.password.get(),
-                mViewModel.repassword.get()
+                mViewModel.password.get()
             )
+            hideKeyboard()
         }
 
 

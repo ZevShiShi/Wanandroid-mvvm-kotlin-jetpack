@@ -2,9 +2,12 @@ package com.zevzhu.wanandroid.ext
 
 import android.content.Context
 import android.graphics.Color
+import android.view.Gravity
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -34,6 +37,12 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 fun Toolbar.initTitle(titleStr: String = ""): Toolbar {
 //    setBackgroundColor(ContextCompat.getColor(appContext, R.color.color_1296db))
     title = titleStr
+    // 将标题居中,getChildAt(0)主标题，getChildAt(1)副标题
+    (getChildAt(0) as TextView).apply {
+        textSize = 16f
+        layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
+        gravity = Gravity.CENTER
+    }
     return this
 }
 

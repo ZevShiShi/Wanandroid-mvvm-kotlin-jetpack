@@ -1,5 +1,6 @@
 package com.zevzhu.wanandroid.data
 
+import com.blankj.utilcode.util.ObjectUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 
 data class ChapterEntity(
@@ -48,8 +49,11 @@ data class ChapterEntity(
     }
 
     fun getUser(): String {
-        if (shareUser.isEmpty()) {
-            return author
+        if (ObjectUtils.isEmpty(shareUser)) {
+            return when (ObjectUtils.isEmpty(author)) {
+                true -> "匿名用户"
+                false -> author
+            }
         }
         return shareUser
     }

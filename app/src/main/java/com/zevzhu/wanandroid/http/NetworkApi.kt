@@ -1,7 +1,6 @@
 package com.zevzhu.wanandroid.http
 
 import com.blankj.utilcode.util.LogUtils
-import com.blankj.utilcode.util.ObjectUtils
 import com.blankj.utilcode.util.SPUtils
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
@@ -40,30 +39,20 @@ class NetworkApi : BaseNetworkApi() {
     }
 
     /**
-     * 添加Cookie拦截器
+     * Cookie拦截器
      */
     private val cookieInterceptor: Interceptor = Interceptor {
         val request = it.request()
+        val originResponse = it.proceed(request)
         if (request.url().toString().contains("login")) {
-            val originResponse = it.proceed(request)
-            val severCookie = originResponse.headers("Set-Cookie")
-            LogUtils.d("cookieInterceptor==========severCookie==$severCookie")
-            val stringBuild = StringBuilder()
-            severCookie.forEach { cookie -> stringBuild.append("$cookie#") }
-            SPUtils.getInstance().put("cookie", stringBuild.toString())
-
-
-            val cookie = SPUtils.getInstance().getString("cookie")
-            LogUtils.d("cookieInterceptor==========cookie==$cookie")
-            if (ObjectUtils.isEmpty(cookie)) {
-                return@Interceptor originResponse
+            val cookies = originResponse.headers("Set-Cookie").toString()
+            if (cookies.isNotEmpty() && cookies.contains("token_pass_wanandroid_com")) {
+                SPUtils.getInstance().put("cookie", cookies)
+                LogUtils.d("cookieInterceptor====hasCookie=====${request.url()}==${cookies}")
             }
-            val cookies = cookie.split("#")
-            val builder = request.newBuilder()
-            cookies.forEach { cookie -> builder.addHeader("Cookie", cookie) }
-            return@Interceptor it.proceed(builder.build())
+            LogUtils.d("cookieInterceptor===========${request.url()}==${cookies}")
         }
-        return@Interceptor it.proceed(request)
+        originResponse
     }
 
     /**

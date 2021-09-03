@@ -42,6 +42,11 @@ class MyFragment : BaseFragment<MyViewModel, MyFragmentBinding>() {
             SPUtils.getInstance().put("cookie", "")
         }
         stvCollect.onClick {
+            if (isLogin()) {
+                nav().navigateAction(R.id.action_mainFragment_to_collectFragment)
+            } else {
+                nav().navigateAction(R.id.action_myFragment_to_loginFragment)
+            }
         }
         stvChapter.onClick {
 
@@ -65,7 +70,6 @@ class MyFragment : BaseFragment<MyViewModel, MyFragmentBinding>() {
         eventViewModel.userInfo.observeInFragment(this, Observer {
             LogUtils.d("userInfo==createObserver==${it}")
             it.notNull({
-//                userReqVM.getUserInfo()
                 refreshLayout.autoRefresh()
             })
         })

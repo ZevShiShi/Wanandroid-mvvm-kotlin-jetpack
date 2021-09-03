@@ -1,5 +1,6 @@
 package com.zevzhu.wanandroid.mvvm.ui.adapter
 
+import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ObjectUtils
 import com.bumptech.glide.Glide
@@ -11,6 +12,9 @@ import com.jaren.lib.view.LikeView
 import com.zevzhu.wanandroid.R
 import com.zevzhu.wanandroid.app.appContext
 import com.zevzhu.wanandroid.data.ChapterEntity
+import com.zevzhu.wanandroid.ext.isLogin
+import com.zevzhu.wanandroid.ext.nav
+import com.zevzhu.wanandroid.ext.navigateAction
 import com.zevzhu.wanandroid.ext.setAdapterAnimation
 import java.util.*
 
@@ -18,9 +22,25 @@ class ChapterAdapter(data: MutableList<ChapterEntity>? = null) :
     BaseDelegateMultiAdapter<ChapterEntity, BaseViewHolder>(data), LoadMoreModule {
 
     private var mShowTag = true
+    private var isCollect = false
+
+    private var likeViewClick: (likeView: LikeView, item: ChapterEntity, pos: Int) -> Unit =
+        { likeView, item, pos -> }
+    private var mFragment: Fragment? = null
 
     constructor(showTag: Boolean = true, data: MutableList<ChapterEntity>? = null) : this(data) {
-        mShowTag = showTag
+        this.mShowTag = showTag
+    }
+
+    constructor(
+        fragment: Fragment,
+        isCollect: Boolean = false,
+        showTag: Boolean = true,
+        data: MutableList<ChapterEntity>? = null
+    ) : this(data) {
+        this.mShowTag = showTag
+        this.mFragment = fragment
+        this.isCollect = isCollect
     }
 
     init {
@@ -77,10 +97,20 @@ class ChapterAdapter(data: MutableList<ChapterEntity>? = null) :
             holder.setGone(R.id.tvChapterTag, true)
         }
         val likeView = holder.getView<LikeView>(R.id.likeZan)
-        likeView.isChecked = item.collect
+        val collect = if (isCollect) true else item.collect
+        likeView.isChecked = collect
+        LogUtils.d("item.collect====${item.collect}")
         likeView.setOnClickListener {
-            likeView.toggle()
+            if (isLogin()) {
+                likeView.isChecked = !item.collect
+                likeViewClick.invoke(likeView, item, holder.adapterPosition)
+            } else {
+                mFragment?.nav()?.navigateAction(R.id.action_myFragment_to_loginFragment)
+            }
         }
     }
 
+    fun setCollect(likeViewClick: (likeView: LikeView, item: ChapterEntity, pos: Int) -> Unit) {
+        this.likeViewClick = likeViewClick
+    }
 }

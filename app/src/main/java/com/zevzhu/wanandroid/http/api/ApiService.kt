@@ -132,4 +132,33 @@ interface ApiService {
         @Field("password") password: String,
         @Field("repassword") repassword: String
     ): ApiResponse<Any>
+
+    /**
+     * 收藏文章
+     */
+    @POST("lg/collect/{id}/json")
+    suspend fun collectChapter(@Path("id") id: Int): ApiResponse<Any?>
+
+    /**
+     * 取消收藏-文章列表
+     */
+    @POST("lg/uncollect_originId/{id}/json")
+    suspend fun unCollectChapter(@Path("id") id: Int): ApiResponse<Any?>
+
+
+    /**
+     * 收藏列表
+     */
+    @GET("lg/collect/list/{page}/json")
+    suspend fun getCollectList(@Path("page") page: Int): ApiResponse<ApiPageResponse<ChapterEntity>>
+
+    /**
+     * 取消收藏-我的收藏列表
+     */
+    @FormUrlEncoded
+    @POST("lg/uncollect/{id}/json")
+    suspend fun unCollectByMyList(
+        @Path("id") id: Int,
+        @Field("originId") originId: Int
+    ): ApiResponse<Any?>
 }

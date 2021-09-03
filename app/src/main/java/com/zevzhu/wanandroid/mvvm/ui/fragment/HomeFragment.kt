@@ -21,6 +21,7 @@ import com.zevzhu.wanandroid.ext.loadPageData
 import com.zevzhu.wanandroid.mvvm.base.BaseFragment
 import com.zevzhu.wanandroid.mvvm.ui.adapter.BannerAdapter
 import com.zevzhu.wanandroid.mvvm.ui.adapter.ChapterAdapter
+import com.zevzhu.wanandroid.mvvm.viewmodel.request.CollectReqViewModel
 import com.zevzhu.wanandroid.mvvm.viewmodel.request.HomeReqViewModel
 import com.zevzhu.wanandroid.mvvm.viewmodel.view.HomeViewModel
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -33,8 +34,10 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeFragmentBinding>() {
 
     private var mBannerAdapter = BannerAdapter(null)
     private val homeReqViewModel: HomeReqViewModel by viewModels()
+    private val collectReqVM: CollectReqViewModel by viewModels()
+
     private lateinit var homeBanner: Banner<BannerEntity, BannerAdapter>
-    private var mChapterAdapter = ChapterAdapter()
+    private var mChapterAdapter = ChapterAdapter(this)
     private var overLoad = false
 
     companion object {
@@ -105,12 +108,16 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeFragmentBinding>() {
                 LogUtils.e("bannerResult===${it.throwable}")
             })
         })
-
         homeReqViewModel.homeResult.observe(viewLifecycleOwner, Observer {
             overLoad = loadPageData(mChapterAdapter, getStatusManager(), refreshLayout, it)
             LogUtils.d("hasMore==overLoad===$overLoad")
         })
 
+        collectReqVM.collectResult.observe(viewLifecycleOwner, Observer { result ->
+            parseState(result, {}, {
+                LogUtils.e("collectResult====${it.errorMsg}")
+            })
+        })
     }
 
     override fun reload() {
@@ -152,6 +159,9 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeFragmentBinding>() {
             })
         (homeBanner.parent as ViewGroup).removeView(homeBanner)
         mChapterAdapter.setHeaderView(homeBanner)
+        mChapterAdapter.setCollect { likeView, item, pos ->
+            collectReqVM.collectOrCollectByChapter(item.id, likeView.isChecked)
+        }
     }
 
 }
