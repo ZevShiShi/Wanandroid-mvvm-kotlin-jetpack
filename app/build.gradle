@@ -84,7 +84,7 @@ dependencies {
 
     implementation 'com.github.hegaojian:JetpackMvvm:1.2.5'
     //util
-    implementation 'com.blankj:utilcodex:1.26.0'
+    implementation 'com.blankj:utilcode:1.29.0'
 
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
@@ -103,4 +103,8 @@ dependencies {
     implementation 'com.google.android:flexbox:2.0.1'
     implementation 'com.github.lygttpod:SuperTextView:2.4.6'
     implementation 'com.makeramen:roundedimageview:2.2.1'
+
+
+    implementation 'org.kodein.di:kodein-di-generic-jvm:6.5.0'
+    implementation 'org.kodein.di:kodein-di-framework-android-x:6.5.0'
 }

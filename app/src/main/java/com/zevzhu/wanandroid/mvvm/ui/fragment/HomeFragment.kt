@@ -55,6 +55,7 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeFragmentBinding>() {
                 when (it.itemId) {
                     R.id.home_search -> {
                         ToastUtils.showShort("Search")
+                        nav().navigateAction(R.id.action_mainFragment_to_searchFragment)
                     }
                 }
                 true

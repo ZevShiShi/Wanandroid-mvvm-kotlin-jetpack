@@ -24,11 +24,18 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_mainFragment_to_collectFragment"
+            app:destination="@id/collectFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/collectFragment" />
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <action
@@ -75,4 +82,8 @@
         android:id="@+id/collectFragment"
         android:name="com.zevzhu.wanandroid.mvvm.ui.fragment.CollectFragment"
         android:label="CollectFragment" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.zevzhu.wanandroid.mvvm.ui.fragment.SearchFragment"
+        android:label="SearchFragment" />
 </navigation>

@@ -1,9 +1,14 @@
 package com.zevzhu.wanandroid.ext
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
@@ -21,6 +26,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.zevzhu.wanandroid.R
 import com.zevzhu.wanandroid.app.appContext
 import com.zevzhu.wanandroid.data.ListDataUiState
+import com.zevzhu.wanandroid.mvvm.ui.view.BackgroundBlurPopupWindow
 import com.zevzhu.wanandroid.mvvm.ui.view.ScaleTransitionPagerTitleView
 import me.bakumon.statuslayoutmanager.library.StatusLayoutManager
 import me.hgj.jetpackmvvm.ext.util.toHtml
@@ -30,6 +36,63 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+
+
+fun getColor(color: Int) = ContextCompat.getColor(appContext, color)
+
+/**
+ * 设置TextView高亮文字
+ * @param content 文字内容
+ * @param searchWord 要高亮的文字
+ * @param textColor 高亮的文字颜色
+ *
+ */
+fun TextView.setHeightLightText(content: String, searchWord: String, textColor: Int) {
+    text = SpannableStringBuilder(content).apply {
+        setSpan(
+            ForegroundColorSpan(getColor(textColor)),
+            content.indexOf(searchWord),
+            content.indexOf(searchWord) + searchWord.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+    }
+}
+
+/**
+ * 初始化popwindow
+ */
+fun initPop(
+    activity: Activity,
+    parentView: View,
+    layoutId: Int,
+    isDropDown: Boolean = false,
+    isShow: Boolean = true,
+    width: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
+    height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
+    gravity: Int = Gravity.CENTER,
+    x: Int = 0,
+    y: Int = 0,
+    popAnim: Int = R.style.pop_animation,
+    darkColor: Int = getColor(R.color.pop_comment_bg),
+    isDark: Boolean = true,
+    blur: Int = 0
+): BackgroundBlurPopupWindow {
+    val rootView = activity.layoutInflater.inflate(layoutId, null)
+    val pop = BackgroundBlurPopupWindow(rootView, width, height, activity, isDark)
+    pop.setBlurRadius(blur) //配置虚化比例
+    pop.setDarkColor(darkColor)
+    pop.animationStyle = popAnim
+    pop.darkFillScreen()
+    if (isShow) {
+        if (isDropDown) {
+            pop.showAsDropDown(parentView, x, y, gravity)
+        } else {
+            pop.showAtLocation(parentView, gravity, x, y)
+        }
+    }
+    return pop
+}
+
 
 /**
  * 初始化有返回键的toolbar
